@@ -1,0 +1,86 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\m.santucci\\Desktop\\ReCover\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{43EE8650-6CD2-4ED4-80F7-D192E281A049}|ReCover\\ReCover.csproj|c:\\users\\m.santucci\\desktop\\recover\\recover\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43EE8650-6CD2-4ED4-80F7-D192E281A049}|ReCover\\ReCover.csproj|solutionrelative:recover\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43EE8650-6CD2-4ED4-80F7-D192E281A049}|ReCover\\ReCover.csproj|C:\\Users\\m.santucci\\Desktop\\ReCover\\recover\\imagesize.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{43EE8650-6CD2-4ED4-80F7-D192E281A049}|ReCover\\ReCover.csproj|solutionrelative:recover\\imagesize.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43EE8650-6CD2-4ED4-80F7-D192E281A049}|ReCover\\ReCover.csproj|C:\\Users\\m.santucci\\Desktop\\ReCover\\recover\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{43EE8650-6CD2-4ED4-80F7-D192E281A049}|ReCover\\ReCover.csproj|solutionrelative:recover\\main.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{43EE8650-6CD2-4ED4-80F7-D192E281A049}|ReCover\\ReCover.csproj|c:\\users\\m.santucci\\desktop\\recover\\recover\\imagesize.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{43EE8650-6CD2-4ED4-80F7-D192E281A049}|ReCover\\ReCover.csproj|solutionrelative:recover\\imagesize.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ImageSize.cs [Progettazione]",
+              "DocumentMoniker": "C:\\Users\\m.santucci\\Desktop\\ReCover\\ReCover\\ImageSize.cs",
+              "RelativeDocumentMoniker": "ReCover\\ImageSize.cs",
+              "ToolTip": "C:\\Users\\m.santucci\\Desktop\\ReCover\\ReCover\\ImageSize.cs [Progettazione]",
+              "RelativeToolTip": "ReCover\\ImageSize.cs [Progettazione]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-13T08:35:53.61Z",
+              "EditorCaption": " [Progettazione]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ImageSize.cs",
+              "DocumentMoniker": "C:\\Users\\m.santucci\\Desktop\\ReCover\\ReCover\\ImageSize.cs",
+              "RelativeDocumentMoniker": "ReCover\\ImageSize.cs",
+              "ToolTip": "C:\\Users\\m.santucci\\Desktop\\ReCover\\ReCover\\ImageSize.cs",
+              "RelativeToolTip": "ReCover\\ImageSize.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAywBwAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-11T18:43:25.735Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Main.cs",
+              "DocumentMoniker": "C:\\Users\\m.santucci\\Desktop\\ReCover\\ReCover\\Main.cs",
+              "RelativeDocumentMoniker": "ReCover\\Main.cs",
+              "ToolTip": "C:\\Users\\m.santucci\\Desktop\\ReCover\\ReCover\\Main.cs",
+              "RelativeToolTip": "ReCover\\Main.cs",
+              "ViewState": "AgIAAKsBAAAAAAAAAAAkwMMBAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-11T18:42:14.924Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Main.cs [Progettazione]",
+              "DocumentMoniker": "C:\\Users\\m.santucci\\Desktop\\ReCover\\ReCover\\Main.cs",
+              "RelativeDocumentMoniker": "ReCover\\Main.cs",
+              "ToolTip": "C:\\Users\\m.santucci\\Desktop\\ReCover\\ReCover\\Main.cs [Progettazione]",
+              "RelativeToolTip": "ReCover\\Main.cs [Progettazione]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-11T18:27:45.084Z",
+              "EditorCaption": " [Progettazione]"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
