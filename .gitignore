@@ -6,6 +6,10 @@
 *.user
 *.sln.docstates
 
+# Bookmarks
+
+.vs/
+
 # Build results
 
 [Dd]ebug/

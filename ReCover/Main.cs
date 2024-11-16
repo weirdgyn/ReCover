@@ -372,7 +372,6 @@ namespace ReCover
                 path.EndsWith("bmp", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        //TODO: fix white borders -> image size -> page size (fit priority?, size -> rectangle?), restituire PdfDocument
         private string CreateDoc(string source, decimal width, decimal height)
         {
             string filename = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(source) + ".pdf");
@@ -381,21 +380,26 @@ namespace ReCover
             {
                 using (var pdfDocument = new PdfDocument(writer))
                 {
+                    iText.Kernel.Geom.Rectangle rectangle = new iText.Kernel.Geom.Rectangle(0, 0, (int)width, (int)height);
+
                     iText.Layout.Element.Image image = new iText.Layout.Element.Image(iText.IO.Image.ImageDataFactory.Create(source));
 
-                    iText.Kernel.Geom.Rectangle rectangle = new iText.Kernel.Geom.Rectangle(0, 0, (int)width, (int)height);
+                    // Image is scaled to the document size (best fit)
 
                     if (rectangle != null)
                         image.ScaleToFit(
                             rectangle.GetWidth(),
                             rectangle.GetHeight());
 
+                    // To avoid borders the document size is clipped to the image after the image scaling
+
+                    double imageWidth = image.GetImageScaledWidth();
+                    double imageHeight = image.GetImageScaledHeight();
+
+                    rectangle.SetWidth((int)imageWidth);
+                    rectangle.SetHeight((int)imageHeight);
+
                     iText.Layout.Document document = new iText.Layout.Document(pdfDocument, new iText.Kernel.Geom.PageSize(rectangle));
-
-                    float offX = (rectangle.GetWidth() - image.GetImageScaledWidth()) / 2;
-                    float offY = (rectangle.GetHeight() - image.GetImageScaledHeight()) / 2;
-
-                    image.SetFixedPosition(offX, offY);
 
                     document.SetMargins(0, 0, 0, 0);
 
