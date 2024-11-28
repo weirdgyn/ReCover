@@ -13,6 +13,7 @@ namespace ReCover
     public partial class Main : Form
     {
         private ImageSize dlgImageSize = new ImageSize();
+        private ToolTip pictureToolTip = new ToolTip();
 
         private PreviewMode frontMode = PreviewMode.Source;
         private PreviewMode backMode = PreviewMode.Source;
@@ -21,7 +22,185 @@ namespace ReCover
         {
             InitializeComponent();
 
-            ofdOpenFile.Filter = Properties.Resources.PDF_FILES_Filter + "|" + Properties.Resources.IMG_FILES_Filter; 
+            ofdOpenFile.Filter = Properties.Resources.PDF_FILES_Filter + "|" + Properties.Resources.IMG_FILES_Filter;
+
+            pictureToolTip.AutoPopDelay = 2000;
+            pictureToolTip.InitialDelay = 1000;
+            pictureToolTip.ReshowDelay = 500;
+            pictureToolTip.ShowAlways = false;
+        }
+
+        private void SetText(TextBox textBox, string text)
+        {
+            textBox.Text = text;
+        }
+
+        private void SetTextAsync(TextBox textBox, string text)
+        {
+            if (textBox.InvokeRequired)
+                textBox.Invoke(new Action<TextBox, string>(SetText), textBox, text);
+            else
+                SetText(textBox, text);
+        }
+
+        private async void SetTextFromUrl(TextBox textBox, string url)
+        {
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    var data = await client.GetByteArrayAsync(url);
+
+                    using (var buffer = new MemoryStream(data))
+                    {
+                        string filename = null;
+                        var guid = Guid.NewGuid().ToString();
+
+                        var temp = Path.GetTempPath();
+
+                        if (isImage(url))
+                        {
+                            var image = Image.FromStream(buffer);
+
+                            filename = Path.Combine(temp, guid + Properties.Resources.BMP_EXT);
+
+                            image.Save(filename);
+                        }
+                        else if (url.EndsWith(Properties.Resources.PDF_EXT, true, System.Globalization.CultureInfo.InvariantCulture))
+                        {
+                            filename = Path.Combine(temp, guid + Properties.Resources.PDF_EXT);
+
+                            File.WriteAllBytes(filename, buffer.ToArray());
+                        }
+
+                        if (!string.IsNullOrEmpty(filename))
+                            SetTextAsync(textBox, filename);
+                    }
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+        }
+
+        public void SetImage(PictureBox pBox, string file, int page, int dpi = 100)
+        {
+            using (var rasterizer = new GhostscriptRasterizer())
+            {
+                var versionInfo = new GhostscriptVersionInfo(
+                    new Version(0, 0, 0),
+                    Properties.Settings.Default.GSDLL,
+                    string.Empty,
+                    GhostscriptLicense.GPL
+                );
+
+                rasterizer.Open(file, versionInfo, false);
+
+                if (page <= rasterizer.PageCount)
+                {
+                    var img = rasterizer.GetPage(dpi, page);
+
+                    pBox.Image = img;
+                }
+
+                rasterizer.Close();
+            }
+        }
+
+        public void SetImage(PictureBox pBox, string file)
+        {
+            Image image = Image.FromFile(file);
+            pBox.Image = image;
+        }
+
+        public void UpdateFrontPreview()
+        {
+            switch (frontMode)
+            {
+                case PreviewMode.New:
+                    SetImage(pbFrontPicture, txtFrontPicture.Text);
+                    break;
+                case PreviewMode.Source:
+                    if (nudFrontPage.Value != 0)
+                        SetImage(pbFrontPicture, txtSource.Text, (int)nudFrontPage.Value);
+                    else
+                        pbFrontPicture.Image = null;
+                    break;
+            }
+        }
+
+        public void UpdateBackPreview()
+        {
+            switch (backMode)
+            {
+                case PreviewMode.New:
+                    SetImage(pbBackPicture, txtBackPicture.Text);
+                    break;
+                case PreviewMode.Source:
+                    if (nudBackPage.Value != 0)
+                        SetImage(pbBackPicture, txtSource.Text, (int)nudBackPage.Value);
+                    else
+                        pbFrontPicture.Image = null;
+                    break;
+            }
+        }
+
+        private bool isImage(string path)
+        {
+            return path.EndsWith("jpg", StringComparison.InvariantCultureIgnoreCase) ||
+                path.EndsWith("png", StringComparison.InvariantCultureIgnoreCase) ||
+                path.EndsWith("gif", StringComparison.InvariantCultureIgnoreCase) ||
+                path.EndsWith("tiff", StringComparison.InvariantCultureIgnoreCase) ||
+                path.EndsWith("bmp", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private void DrawMode(PaintEventArgs e, PreviewMode mode)
+        {
+            e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+            e.Graphics.DrawString(
+                mode.ToString(),
+                Font,
+                Brushes.Blue,
+                0, 0);
+        }
+
+        private string CreateDoc(string source, decimal width, decimal height)
+        {
+            string filename = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(source) + ".pdf");
+
+            using (var writer = new PdfWriter(filename))
+            {
+                using (var pdfDocument = new PdfDocument(writer))
+                {
+                    iText.Kernel.Geom.Rectangle rectangle = new iText.Kernel.Geom.Rectangle(0, 0, (int)width, (int)height);
+
+                    iText.Layout.Element.Image image = new iText.Layout.Element.Image(iText.IO.Image.ImageDataFactory.Create(source));
+
+                    // Image is scaled to the document size (best fit)
+
+                    if (rectangle != null)
+                        image.ScaleToFit(
+                            rectangle.GetWidth(),
+                            rectangle.GetHeight());
+
+                    // To avoid borders the document size is clipped to the image after the image scaling
+
+                    double imageWidth = image.GetImageScaledWidth();
+                    double imageHeight = image.GetImageScaledHeight();
+
+                    rectangle.SetWidth((int)imageWidth);
+                    rectangle.SetHeight((int)imageHeight);
+
+                    iText.Layout.Document document = new iText.Layout.Document(pdfDocument, new iText.Kernel.Geom.PageSize(rectangle));
+
+                    document.SetMargins(0, 0, 0, 0);
+
+                    document.Add(image);
+                }
+            }
+
+            return filename;
         }
 
         private void btnSelectSource_Click(object sender, EventArgs e)
@@ -198,20 +377,7 @@ namespace ReCover
             if (e.Data.GetDataPresent(DataFormats.FileDrop) || e.Data.GetDataPresent(Properties.Resources.URL_MIME))
                 e.Effect = DragDropEffects.Copy;
         }
-
-        private void SetText(TextBox textBox, string text)
-        {
-            textBox.Text = text;
-        }
-
-        private void SetTextAsync(TextBox textBox, string text)
-        {
-            if (textBox.InvokeRequired)
-                textBox.Invoke(new Action<TextBox, string>(SetText), textBox, text);
-            else
-                SetText(textBox, text);
-        }
-
+        
         private void btnLoadSource_Click(object sender, EventArgs e)
         {
             if (!File.Exists(txtSource.Text))
@@ -237,108 +403,6 @@ namespace ReCover
             }
         }
 
-        private async void SetTextFromUrl(TextBox textBox, string url)
-        {
-            using (var client = new HttpClient())
-            {
-                try
-                {
-                    var data = await client.GetByteArrayAsync(url);
-
-                    using (var buffer = new MemoryStream(data))
-                    {
-                        string filename = null;
-                        var guid = Guid.NewGuid().ToString();
-
-                        var temp = Path.GetTempPath();
-
-                        if (isImage(url))
-                        {
-                            var image = Image.FromStream(buffer);
-
-                            filename = Path.Combine(temp, guid + Properties.Resources.BMP_EXT);
-
-                            image.Save(filename);
-                        }
-                        else if (url.EndsWith(Properties.Resources.PDF_EXT, true, System.Globalization.CultureInfo.InvariantCulture))
-                        {
-                            filename = Path.Combine(temp, guid + Properties.Resources.PDF_EXT);
-
-                            File.WriteAllBytes(filename, buffer.ToArray());
-                        }
-
-                        if (!string.IsNullOrEmpty(filename))
-                            SetTextAsync(textBox, filename);
-                    }
-                }
-                catch (Exception ex)
-                {
-                }
-            }
-        }
-
-        public void SetImage(PictureBox pBox, string file, int page, int dpi = 100)
-        {
-            using (var rasterizer = new GhostscriptRasterizer())
-            {
-                var versionInfo = new GhostscriptVersionInfo(
-                    new Version(0, 0, 0),
-                    Properties.Settings.Default.GSDLL,
-                    string.Empty,
-                    GhostscriptLicense.GPL
-                );
-
-                rasterizer.Open(file, versionInfo, false);
-
-                if (page <= rasterizer.PageCount)
-                {
-                    var img = rasterizer.GetPage(dpi, page);
-
-                    pBox.Image = img;
-                }
-
-                rasterizer.Close();
-            }
-        }
-
-        public void SetImage(PictureBox pBox, string file)
-        {
-            Image image = Image.FromFile(file);
-            pBox.Image = image;
-        }
-
-        public void UpdateFrontPreview()
-        {
-            switch (frontMode)
-            {
-                case PreviewMode.New:
-                    SetImage(pbFrontPicture, txtFrontPicture.Text);
-                    break;
-                case PreviewMode.Source:
-                    if (nudFrontPage.Value != 0)
-                        SetImage(pbFrontPicture, txtSource.Text, (int)nudFrontPage.Value);
-                    else
-                        pbFrontPicture.Image = null;
-                    break;
-            }
-        }
-
-        public void UpdateBackPreview()
-        {
-            switch (backMode)
-            {
-                case PreviewMode.New:
-                    SetImage(pbBackPicture, txtBackPicture.Text);
-                    break;
-                case PreviewMode.Source:
-                    if (nudBackPage.Value != 0)
-                        SetImage(pbBackPicture, txtSource.Text, (int)nudBackPage.Value);
-                    else
-                        pbFrontPicture.Image = null;
-                    break;
-            }
-        }
-
         private void txtFrontPicture_TextChanged(object sender, EventArgs e)
         {
             if (frontMode == PreviewMode.New)
@@ -361,53 +425,6 @@ namespace ReCover
         {
             backMode = ((backMode == PreviewMode.Source) ? PreviewMode.New : PreviewMode.Source);
             UpdateBackPreview();
-        }
-
-        private bool isImage(string path)
-        {
-            return path.EndsWith("jpg", StringComparison.InvariantCultureIgnoreCase) ||
-                path.EndsWith("png", StringComparison.InvariantCultureIgnoreCase) ||
-                path.EndsWith("gif", StringComparison.InvariantCultureIgnoreCase) ||
-                path.EndsWith("tiff", StringComparison.InvariantCultureIgnoreCase) ||
-                path.EndsWith("bmp", StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        private string CreateDoc(string source, decimal width, decimal height)
-        {
-            string filename = Path.Combine(Path.GetTempPath(), Path.GetFileNameWithoutExtension(source) + ".pdf");
-
-            using (var writer = new PdfWriter(filename))
-            {
-                using (var pdfDocument = new PdfDocument(writer))
-                {
-                    iText.Kernel.Geom.Rectangle rectangle = new iText.Kernel.Geom.Rectangle(0, 0, (int)width, (int)height);
-
-                    iText.Layout.Element.Image image = new iText.Layout.Element.Image(iText.IO.Image.ImageDataFactory.Create(source));
-
-                    // Image is scaled to the document size (best fit)
-
-                    if (rectangle != null)
-                        image.ScaleToFit(
-                            rectangle.GetWidth(),
-                            rectangle.GetHeight());
-
-                    // To avoid borders the document size is clipped to the image after the image scaling
-
-                    double imageWidth = image.GetImageScaledWidth();
-                    double imageHeight = image.GetImageScaledHeight();
-
-                    rectangle.SetWidth((int)imageWidth);
-                    rectangle.SetHeight((int)imageHeight);
-
-                    iText.Layout.Document document = new iText.Layout.Document(pdfDocument, new iText.Kernel.Geom.PageSize(rectangle));
-
-                    document.SetMargins(0, 0, 0, 0);
-
-                    document.Add(image);
-                }
-            }
-
-            return filename;
         }
 
         private void btnSaveDestination_Click(object sender, EventArgs e)
@@ -444,6 +461,19 @@ namespace ReCover
             {
                 if (!string.IsNullOrEmpty(frontPageFile) && File.Exists(frontPageFile))
                 {
+                    if (cbBackupFront.Checked)
+                    {
+                        var backupFrontFilename = Path.Combine(Properties.Settings.Default.BackupFolder, nudFrontPage.Value.ToString()+".pdf");
+                        
+                        using (var backupFront = new PdfDocument(new PdfWriter(backupFrontFilename)))
+                        {
+                            using (PdfDocument source = new PdfDocument(new PdfReader(txtSource.Text)))
+                            {
+                                source.CopyPagesTo(1, 1, backupFront, (int)nudFrontPage.Value);
+                            }
+                        }
+                    }
+
                     destination.RemovePage((int)nudFrontPage.Value);
 
                     using (PdfDocument frontPage = new PdfDocument(new PdfReader(frontPageFile)))
@@ -454,6 +484,19 @@ namespace ReCover
 
                 if (!string.IsNullOrEmpty(backPageFile) && File.Exists(backPageFile))
                 {
+                    if (cbBackupBack.Checked)
+                    {
+                        var backupBackFilename = Path.Combine(Properties.Settings.Default.BackupFolder, nudBackPage.Value.ToString() + ".pdf");
+
+                        using (var backupBack = new PdfDocument(new PdfWriter(backupBackFilename)))
+                        {
+                            using (PdfDocument source = new PdfDocument(new PdfReader(txtSource.Text)))
+                            {
+                                source.CopyPagesTo(1, 1, backupBack, (int)nudBackPage.Value);
+                            }
+                        }
+                    }
+
                     destination.RemovePage((int)nudBackPage.Value);
 
                     using (PdfDocument backPage = new PdfDocument(new PdfReader(backPageFile)))
@@ -467,6 +510,38 @@ namespace ReCover
                     File.Delete(txtDestination.Text);
 
             File.Move(filename, txtDestination.Text);
+        }
+
+        private void pbFrontPicture_Paint(object sender, PaintEventArgs e)
+        {
+            DrawMode(e, frontMode);
+        }
+
+        private void pbBackPicture_Paint(object sender, PaintEventArgs e)
+        {
+            DrawMode(e, backMode);
+        }
+
+        private void pbFrontPicture_MouseEnter(object sender, EventArgs e)
+        {
+            if (pbFrontPicture.Image == null)
+            { 
+                pictureToolTip.SetToolTip(pbFrontPicture, string.Empty);
+                return;
+            }
+
+            pictureToolTip.SetToolTip(pbFrontPicture, string.Format("{0}x{1}", pbFrontPicture.Image.Width, pbFrontPicture.Image.Height));
+        }
+
+        private void pbBackPicture_MouseEnter(object sender, EventArgs e)
+        {
+            if (pbBackPicture.Image == null)
+            {
+                pictureToolTip.SetToolTip(pbBackPicture, string.Empty);
+                return;
+            }
+
+            pictureToolTip.SetToolTip(pbBackPicture, string.Format("{0}x{1}", pbBackPicture.Image.Width, pbBackPicture.Image.Height));
         }
     }
 }

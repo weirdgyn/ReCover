@@ -81,7 +81,7 @@
             // 
             // chCount
             // 
-            this.chCount.Text = "Size";
+            this.chCount.Text = "Count";
             // 
             // chWidth
             // 

@@ -56,6 +56,8 @@
             this.btnSelectBackSize = new System.Windows.Forms.Button();
             this.btnLoadSource = new System.Windows.Forms.Button();
             this.btnSaveDestination = new System.Windows.Forms.Button();
+            this.cbBackupBack = new System.Windows.Forms.CheckBox();
+            this.cbBackupFront = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbFrontPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBackPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFrontPage)).BeginInit();
@@ -112,29 +114,33 @@
             // pbFrontPicture
             // 
             this.pbFrontPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbFrontPicture.Location = new System.Drawing.Point(12, 62);
+            this.pbFrontPicture.Location = new System.Drawing.Point(9, 88);
             this.pbFrontPicture.Name = "pbFrontPicture";
             this.pbFrontPicture.Size = new System.Drawing.Size(242, 207);
             this.pbFrontPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbFrontPicture.TabIndex = 3;
             this.pbFrontPicture.TabStop = false;
             this.pbFrontPicture.Click += new System.EventHandler(this.pbFrontPicture_Click);
+            this.pbFrontPicture.Paint += new System.Windows.Forms.PaintEventHandler(this.pbFrontPicture_Paint);
+            this.pbFrontPicture.MouseEnter += new System.EventHandler(this.pbFrontPicture_MouseEnter);
             // 
             // pbBackPicture
             // 
             this.pbBackPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbBackPicture.Location = new System.Drawing.Point(260, 62);
+            this.pbBackPicture.Location = new System.Drawing.Point(257, 88);
             this.pbBackPicture.Name = "pbBackPicture";
-            this.pbBackPicture.Size = new System.Drawing.Size(250, 207);
+            this.pbBackPicture.Size = new System.Drawing.Size(257, 207);
             this.pbBackPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbBackPicture.TabIndex = 4;
             this.pbBackPicture.TabStop = false;
             this.pbBackPicture.Click += new System.EventHandler(this.pbBackPicture_Click);
+            this.pbBackPicture.Paint += new System.Windows.Forms.PaintEventHandler(this.pbBackPicture_Paint);
+            this.pbBackPicture.MouseEnter += new System.EventHandler(this.pbBackPicture_MouseEnter);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 340);
+            this.label2.Location = new System.Drawing.Point(6, 366);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(74, 16);
             this.label2.TabIndex = 7;
@@ -143,7 +149,7 @@
             // btnSelectDestination
             // 
             this.btnSelectDestination.AllowDrop = true;
-            this.btnSelectDestination.Location = new System.Drawing.Point(479, 336);
+            this.btnSelectDestination.Location = new System.Drawing.Point(483, 362);
             this.btnSelectDestination.Name = "btnSelectDestination";
             this.btnSelectDestination.Size = new System.Drawing.Size(31, 23);
             this.btnSelectDestination.TabIndex = 13;
@@ -156,9 +162,9 @@
             // txtDestination
             // 
             this.txtDestination.AllowDrop = true;
-            this.txtDestination.Location = new System.Drawing.Point(89, 337);
+            this.txtDestination.Location = new System.Drawing.Point(86, 363);
             this.txtDestination.Name = "txtDestination";
-            this.txtDestination.Size = new System.Drawing.Size(347, 22);
+            this.txtDestination.Size = new System.Drawing.Size(354, 22);
             this.txtDestination.TabIndex = 12;
             this.txtDestination.DragDrop += new System.Windows.Forms.DragEventHandler(this.txtDestination_DragDrop);
             this.txtDestination.DragEnter += new System.Windows.Forms.DragEventHandler(this.txtDestination_DragEnter);
@@ -166,7 +172,7 @@
             // txtFrontPicture
             // 
             this.txtFrontPicture.AllowDrop = true;
-            this.txtFrontPicture.Location = new System.Drawing.Point(12, 275);
+            this.txtFrontPicture.Location = new System.Drawing.Point(9, 301);
             this.txtFrontPicture.Name = "txtFrontPicture";
             this.txtFrontPicture.Size = new System.Drawing.Size(205, 22);
             this.txtFrontPicture.TabIndex = 4;
@@ -177,9 +183,9 @@
             // txtBackPicture
             // 
             this.txtBackPicture.AllowDrop = true;
-            this.txtBackPicture.Location = new System.Drawing.Point(260, 275);
+            this.txtBackPicture.Location = new System.Drawing.Point(257, 301);
             this.txtBackPicture.Name = "txtBackPicture";
-            this.txtBackPicture.Size = new System.Drawing.Size(213, 22);
+            this.txtBackPicture.Size = new System.Drawing.Size(220, 22);
             this.txtBackPicture.TabIndex = 6;
             this.txtBackPicture.TextChanged += new System.EventHandler(this.txtBackPicture_TextChanged);
             this.txtBackPicture.DragDrop += new System.Windows.Forms.DragEventHandler(this.txtBackPicture_DragDrop);
@@ -197,7 +203,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(264, 36);
+            this.label4.Location = new System.Drawing.Point(254, 36);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(38, 16);
             this.label4.TabIndex = 11;
@@ -206,7 +212,7 @@
             // btnSelectFront
             // 
             this.btnSelectFront.AllowDrop = true;
-            this.btnSelectFront.Location = new System.Drawing.Point(223, 274);
+            this.btnSelectFront.Location = new System.Drawing.Point(220, 300);
             this.btnSelectFront.Name = "btnSelectFront";
             this.btnSelectFront.Size = new System.Drawing.Size(31, 23);
             this.btnSelectFront.TabIndex = 5;
@@ -219,7 +225,7 @@
             // btnSelectBack
             // 
             this.btnSelectBack.AllowDrop = true;
-            this.btnSelectBack.Location = new System.Drawing.Point(479, 275);
+            this.btnSelectBack.Location = new System.Drawing.Point(483, 300);
             this.btnSelectBack.Name = "btnSelectBack";
             this.btnSelectBack.Size = new System.Drawing.Size(31, 23);
             this.btnSelectBack.TabIndex = 7;
@@ -233,22 +239,22 @@
             // 
             this.nudFrontPage.Location = new System.Drawing.Point(52, 34);
             this.nudFrontPage.Name = "nudFrontPage";
-            this.nudFrontPage.Size = new System.Drawing.Size(206, 22);
+            this.nudFrontPage.Size = new System.Drawing.Size(199, 22);
             this.nudFrontPage.TabIndex = 2;
             this.nudFrontPage.ValueChanged += new System.EventHandler(this.nudFrontPage_ValueChanged);
             // 
             // nudBackPage
             // 
-            this.nudBackPage.Location = new System.Drawing.Point(305, 34);
+            this.nudBackPage.Location = new System.Drawing.Point(293, 34);
             this.nudBackPage.Name = "nudBackPage";
-            this.nudBackPage.Size = new System.Drawing.Size(212, 22);
+            this.nudBackPage.Size = new System.Drawing.Size(224, 22);
             this.nudBackPage.TabIndex = 3;
             this.nudBackPage.ValueChanged += new System.EventHandler(this.nudBackPage_ValueChanged);
             // 
             // nudFrontWidth
             // 
             this.nudFrontWidth.DecimalPlaces = 2;
-            this.nudFrontWidth.Location = new System.Drawing.Point(54, 303);
+            this.nudFrontWidth.Location = new System.Drawing.Point(51, 329);
             this.nudFrontWidth.Name = "nudFrontWidth";
             this.nudFrontWidth.Size = new System.Drawing.Size(80, 22);
             this.nudFrontWidth.TabIndex = 8;
@@ -256,7 +262,7 @@
             // nudFrontHeight
             // 
             this.nudFrontHeight.DecimalPlaces = 2;
-            this.nudFrontHeight.Location = new System.Drawing.Point(140, 303);
+            this.nudFrontHeight.Location = new System.Drawing.Point(137, 329);
             this.nudFrontHeight.Name = "nudFrontHeight";
             this.nudFrontHeight.Size = new System.Drawing.Size(80, 22);
             this.nudFrontHeight.TabIndex = 9;
@@ -264,7 +270,7 @@
             // nudBackHeight
             // 
             this.nudBackHeight.DecimalPlaces = 2;
-            this.nudBackHeight.Location = new System.Drawing.Point(391, 303);
+            this.nudBackHeight.Location = new System.Drawing.Point(397, 329);
             this.nudBackHeight.Name = "nudBackHeight";
             this.nudBackHeight.Size = new System.Drawing.Size(80, 22);
             this.nudBackHeight.TabIndex = 11;
@@ -272,15 +278,15 @@
             // nudBackWidth
             // 
             this.nudBackWidth.DecimalPlaces = 2;
-            this.nudBackWidth.Location = new System.Drawing.Point(305, 303);
+            this.nudBackWidth.Location = new System.Drawing.Point(293, 329);
             this.nudBackWidth.Name = "nudBackWidth";
-            this.nudBackWidth.Size = new System.Drawing.Size(80, 22);
+            this.nudBackWidth.Size = new System.Drawing.Size(98, 22);
             this.nudBackWidth.TabIndex = 10;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(254, 305);
+            this.label5.Location = new System.Drawing.Point(251, 331);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(36, 16);
             this.label5.TabIndex = 22;
@@ -289,7 +295,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 305);
+            this.label6.Location = new System.Drawing.Point(9, 331);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(36, 16);
             this.label6.TabIndex = 23;
@@ -297,7 +303,7 @@
             // 
             // btnSelectFrontSize
             // 
-            this.btnSelectFrontSize.Location = new System.Drawing.Point(223, 303);
+            this.btnSelectFrontSize.Location = new System.Drawing.Point(220, 329);
             this.btnSelectFrontSize.Name = "btnSelectFrontSize";
             this.btnSelectFrontSize.Size = new System.Drawing.Size(31, 23);
             this.btnSelectFrontSize.TabIndex = 24;
@@ -308,7 +314,7 @@
             // 
             // btnSelectBackSize
             // 
-            this.btnSelectBackSize.Location = new System.Drawing.Point(479, 303);
+            this.btnSelectBackSize.Location = new System.Drawing.Point(483, 328);
             this.btnSelectBackSize.Name = "btnSelectBackSize";
             this.btnSelectBackSize.Size = new System.Drawing.Size(31, 23);
             this.btnSelectBackSize.TabIndex = 25;
@@ -330,7 +336,7 @@
             // 
             // btnSaveDestination
             // 
-            this.btnSaveDestination.Location = new System.Drawing.Point(442, 336);
+            this.btnSaveDestination.Location = new System.Drawing.Point(446, 362);
             this.btnSaveDestination.Name = "btnSaveDestination";
             this.btnSaveDestination.Size = new System.Drawing.Size(31, 23);
             this.btnSaveDestination.TabIndex = 27;
@@ -339,11 +345,33 @@
             this.btnSaveDestination.UseVisualStyleBackColor = true;
             this.btnSaveDestination.Click += new System.EventHandler(this.btnSaveDestination_Click);
             // 
+            // cbBackupBack
+            // 
+            this.cbBackupBack.AutoSize = true;
+            this.cbBackupBack.Location = new System.Drawing.Point(257, 62);
+            this.cbBackupBack.Name = "cbBackupBack";
+            this.cbBackupBack.Size = new System.Drawing.Size(108, 20);
+            this.cbBackupBack.TabIndex = 28;
+            this.cbBackupBack.Text = "Backup back";
+            this.cbBackupBack.UseVisualStyleBackColor = true;
+            // 
+            // cbBackupFront
+            // 
+            this.cbBackupFront.AutoSize = true;
+            this.cbBackupFront.Location = new System.Drawing.Point(12, 62);
+            this.cbBackupFront.Name = "cbBackupFront";
+            this.cbBackupFront.Size = new System.Drawing.Size(103, 20);
+            this.cbBackupFront.TabIndex = 29;
+            this.cbBackupFront.Text = "Backup front";
+            this.cbBackupFront.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(528, 370);
+            this.ClientSize = new System.Drawing.Size(528, 398);
+            this.Controls.Add(this.cbBackupFront);
+            this.Controls.Add(this.cbBackupBack);
             this.Controls.Add(this.btnSaveDestination);
             this.Controls.Add(this.btnLoadSource);
             this.Controls.Add(this.btnSelectBackSize);
@@ -416,6 +444,8 @@
         private System.Windows.Forms.Button btnSelectBackSize;
         private System.Windows.Forms.Button btnLoadSource;
         private System.Windows.Forms.Button btnSaveDestination;
+        private System.Windows.Forms.CheckBox cbBackupBack;
+        private System.Windows.Forms.CheckBox cbBackupFront;
     }
 }
 

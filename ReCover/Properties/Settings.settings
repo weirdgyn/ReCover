@@ -5,5 +5,8 @@
     <Setting Name="GSDLL" Type="System.String" Scope="User">
       <Value Profile="(Default)">C:\Program Files (x86)\gs\gs10.04.0\bin\gsdll32.dll</Value>
     </Setting>
+    <Setting Name="BackupFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\weird\Desktop</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

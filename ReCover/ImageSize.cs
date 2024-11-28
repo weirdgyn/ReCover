@@ -28,6 +28,8 @@ namespace ReCover
 
         public void UpdateSizes(PdfDocument document)
         {
+            lvSizes.Items.Clear();
+
             Rectangle _rect = document.GetDefaultPageSize();
 
             PageSize _size = PageSizeExtension.SizeOf(_rect);
