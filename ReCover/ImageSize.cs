@@ -26,7 +26,7 @@ namespace ReCover
             MinHeight = 0;
         }
 
-        public void UpdateSizes(PdfDocument document)
+        public void UpdateSizes(PdfDocument document, int frontPageIndex, int backPageIndex)
         {
             lvSizes.Items.Clear();
 
@@ -69,7 +69,7 @@ namespace ReCover
 
                 if (_item != null)
                 {
-                    int _count = int.Parse(_item.SubItems[1].Text.ToString());
+                    int _count = int.Parse(_item.SubItems[1].Text);
                     _count++;
                     _item.SubItems[1].Text = _count.ToString();
                 }
@@ -87,6 +87,14 @@ namespace ReCover
                     lvSizes.Items.Add(_item);
                 }
 
+                if (_i+1 == frontPageIndex)
+                    if (_item.SubItems.Count == 4)
+                        _item.SubItems.Add("Front");
+
+                if (_i+1 == backPageIndex)
+                    if (_item.SubItems.Count == 4)
+                        _item.SubItems.Add("Back");
+ 
                 if ((decimal)_rect.GetWidth() > MaxWidth)
                     MaxWidth = (decimal)_rect.GetWidth();
 

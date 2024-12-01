@@ -35,6 +35,7 @@
             this.chCount = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chWidth = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chHeight = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.chCover = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // btnOk
@@ -51,7 +52,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(251, 281);
+            this.btnCancel.Location = new System.Drawing.Point(300, 281);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 2;
@@ -64,12 +65,13 @@
             this.chID,
             this.chCount,
             this.chWidth,
-            this.chHeight});
+            this.chHeight,
+            this.chCover});
             this.lvSizes.FullRowSelect = true;
             this.lvSizes.HideSelection = false;
             this.lvSizes.Location = new System.Drawing.Point(12, 12);
             this.lvSizes.Name = "lvSizes";
-            this.lvSizes.Size = new System.Drawing.Size(314, 263);
+            this.lvSizes.Size = new System.Drawing.Size(363, 263);
             this.lvSizes.TabIndex = 4;
             this.lvSizes.UseCompatibleStateImageBehavior = false;
             this.lvSizes.View = System.Windows.Forms.View.Details;
@@ -91,13 +93,18 @@
             // 
             this.chHeight.Text = "Height";
             // 
+            // chCover
+            // 
+            this.chCover.Text = "Front/Back";
+            this.chCover.Width = 90;
+            // 
             // ImageSize
             // 
             this.AcceptButton = this.btnOk;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(338, 316);
+            this.ClientSize = new System.Drawing.Size(387, 316);
             this.Controls.Add(this.lvSizes);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
@@ -116,5 +123,6 @@
         private System.Windows.Forms.ColumnHeader chCount;
         private System.Windows.Forms.ColumnHeader chWidth;
         private System.Windows.Forms.ColumnHeader chHeight;
+        private System.Windows.Forms.ColumnHeader chCover;
     }
 }

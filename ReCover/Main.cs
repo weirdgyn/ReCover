@@ -392,7 +392,7 @@ namespace ReCover
                     nudFrontPage.Value = 1;
                     nudBackPage.Value = nudBackPage.Maximum;
 
-                    dlgImageSize.UpdateSizes(document);
+                    dlgImageSize.UpdateSizes(document, (int)nudFrontPage.Value, (int)nudBackPage.Value);
 
                     nudBackWidth.Maximum = nudFrontWidth.Maximum = dlgImageSize.MaxWidth;
                     nudBackHeight.Maximum = nudFrontHeight.Maximum = dlgImageSize.MaxHeight;
